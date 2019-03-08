@@ -1,0 +1,40 @@
+#ifndef FONCTION_H
+#define FONCTION_H
+
+#include "definition.h"
+
+void announce_results (struct board board);
+void display_players (struct board *board, struct card card_list[]);
+void death(struct board* board);
+void increase_ideas (struct board *board);
+void death (struct board* board);
+struct board init_board(int number_players);
+
+int random_card();
+int choose_adversary (int p , struct board board);
+int select_card (int p, struct board *board, struct card card_list[]);
+void apply_card (int c, int p ,struct board* board,struct card card_list[]);
+void refill_cards (int p, struct board *board);
+void discard_hand (int p, struct board *board);
+
+void init_decks (int number_players);
+void distribute (struct board *board);
+void shuffle(int p,struct board *board);
+void discard_card (int c, int p, struct board* board);
+int draw_card (int p , struct board* board);
+
+
+
+void display_decks (struct board* board);
+struct deck * get_address(int p);
+int get_ith_card (int i, int p, struct board* board );
+void modif_ith_card (int val, int i, int p, struct board* board );
+int get_top (int p, struct board* board );
+int get_bottom (int p, struct board* board );
+void modif_top (int val, int p, struct board* board );
+void modif_bottom (int val, int p, struct board* board );
+
+
+
+
+#endif

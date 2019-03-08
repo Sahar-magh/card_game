@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include "definition.h"
+#include "fonctions.h"
+#include <getopt.h>
+#include <stdlib.h>
+
+
+#define MAX 50
+
+int tab_positions[MAX][MAX];
+
+void init_positions(int p, int tab_position[MAX][MAX]) {
+  //int **matrice;
+  //matrice=malloc(MAX*sizeof(int*));
+  for (int i=0;i<MAX;i++) {
+    for (int j=0;j<MAX;j++) {
+      tab_positions[i][j]=-1; // places libres 
+    }
+  }
+  for (int r=0;r<p;r++) {
+    int c=rand()%MAX;
+    int e=rand()%MAX;
+    while(tab_positions[c][e]!=-1) {
+      c=(c+rand())%MAX;
+      e=(e+rand())%MAX;
+    }
+    tab_positions[c][e]=r;
+  }
+}
+
+
+// Global seed for the random number generator
+int seed = 0;
+////////////////////////////////////////////////////////////////
+// Function for parsing the options of the program
+// Currently available options are :
+// -s <seed> : sets the seed
+void parse_opts(int argc, char* argv[]) {
+  int opt;
+  while ((opt = getopt(argc, argv, "s:")) != -1) {
+    switch (opt) {
+    case 's':
+      seed = atoi(optarg);
+      break;
+    default: /* '?' */
+      fprintf(stderr, "Usage: %s [-s seed] \n",
+	      argv[0]);
+      exit(EXIT_FAILURE);
+    }
+  }
+}
+////////////////////////////////////////////////////////////////
+
+
+int main(int argc,char *argv[]) {
+//////////////////////////////////////////
+  parse_opts(argc, argv);
+  srand(seed);
+//////////////////////////////////////////
+  int p=3;
+  //init_positions(p);
+  for (int m=0;m<MAX;m++){
+    for (int z=0;z<MAX;z++){
+      printf("la %d ligne et %d colonne : %d\n",m,z,tab_positions[m][z]);
+    }
+  }
+  return 0;
+}

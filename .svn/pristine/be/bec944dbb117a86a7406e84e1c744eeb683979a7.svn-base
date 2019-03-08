@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include "fonctions.h"
+#include "definition.h"
+
+#include <getopt.h>
+#include <stdlib.h>
+
+// Global seed for the random number generator
+int seed = 0;
+////////////////////////////////////////////////////////////////
+// Function for parsing the options of the program
+// Currently available options are :
+// -s <seed> : sets the seed
+void parse_opts(int argc, char* argv[]) {
+  int opt;
+  while ((opt = getopt(argc, argv, "s:")) != -1) {
+    switch (opt) {
+    case 's':
+      seed = atoi(optarg);
+      break;
+    default: /* '?' */
+      fprintf(stderr, "Usage: %s [-s seed] [number of players] \n",
+	      argv[0]);
+      exit(EXIT_FAILURE);
+    }
+  }
+}
+////////////////////////////////////////////////////////////////
+
+
+
+
+//l'ensemble des cartes,la premiere NULL pour dire que le joueur n'a pas de carte
+
+struct card card_list[] = { 
+{Null, "Null" , 0 ,0 , 0, 0, 0 },
+{Kitty_Think,"Kitty_Think", 5, 1, 0, 0, 0} ,
+{Kitty_Steal,"Kitty_Steal" , 10, 1, 1, 0, 0} , 
+{Kitty_Panacea ,"Kitty_Panacea", 2, 0, 0, 10, 0} ,
+{Kitty_Razor ,"Kitty_Razor", 2, 0, 0, 0, 10} , 
+{Kitty_Hell_is_Others ,"Kitty_Hell_is_Others", 100, 0, 0, 0, INT_MAX} };
+
+
+
+int main (int argc,char* argv[])
+
+{
+//////////////////////////////////////////
+  parse_opts(argc, argv);
+  srand(seed);
+//////////////////////////////////////////
+  struct board board=init_board (atoi (argv[argc - 1]));// initialiser le tableau de jeux
+  //struct board board=init_board (2);// initialiser le tableau de jeux
+  while ( (board.round < MAX_ROUND) && (board.players_alive>=2))// tant que deux joueurs sont encore vivants
+    {
+      increase_ideas (&board);
+      for (int p = 0 ; p < board.number_players ; ++p)
+	{
+	  if (board.players[p].state){
+	    int c = select_card (p, &board, card_list);
+	    printf("%d  chooses the card %d ",p,c); //A RETIRER a la fin
+	    if (c)
+	      {
+		apply_card(c,p,&board,card_list);
+		discard_card(c,p,&board);
+	      }
+	    printf("\n");//A RETIRER a la fin
+	    refill_cards (p,&board);//A ENLEVER
+	  }
+	}
+      death(&board);
+      display_players(&board, card_list);//on affiche tout les joueurs alive
+    }
+  announce_results(board);
+}//c'est la fin du jeu on annonce les resultats 
+
+

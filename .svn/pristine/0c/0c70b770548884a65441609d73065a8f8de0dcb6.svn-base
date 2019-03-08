@@ -1,0 +1,19 @@
+#Projet de : Sahar Maghraoui et Claire Hilaire 
+
+make : pour compiler tout. 
+
+make test : pour executer le test. 
+
+make clean : pour supprimer tous les fichiers crées à la compilation. 
+
+./base_version -s[seed][Nombre de joueurs] 
+
+./achievement1 -s[seed][Nombre de joueurs]
+Remarque: La seed est optionnelle, sinon elle est prise à 1 par défaut. 
+
+Tout les fichiers sources et le Makefile sont dans source. 
+Tout les fichiers sources du rapport sont dans rapport.  
+
+pdflatex main.tex : pour la compilation du rapport.
+
+evince main.pdf : pour ouvrir le fichier pdf.

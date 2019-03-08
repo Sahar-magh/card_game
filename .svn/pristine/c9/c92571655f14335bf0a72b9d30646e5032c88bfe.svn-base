@@ -1,0 +1,53 @@
+\chapter{Les fonctions Test}
+\section{difficultés et évolution}
+
+Au cours de l'encodage du projet, il a fallut tester les fonctions
+prises individuellement grâce à des fonctions test. Ce sont donc des
+fonctions qui simulent une situation initiale appellent la fonction à
+tester et permette de comparer le résultat avec la situation attendu. 
+
+Au début, ayant mal compris leur fonctionnement attendu, nous avions
+au début fait des fonctions d'affichage, permettant d'afficher l'état
+des élément de plateau concerné et s'assurer visuellement de la bonne
+évolution de cet élément. Ce n'est que par la suite que nous avons
+repris ces fonctions test pour qu'elles s'occupent elles-même de la
+comparaison et informe l'utilisateur seulement de la présence où non
+d'erreur. 
+
+Une difficultés supplémentaire a été l'implémentation des fonctions
+test du deck. En effet, n'ayant pas accès à la structure du deck ou au
+tableau des deck "decks" (car seules les fonctions du fichier
+\texttt{deck\_ach1.c} y ont accès), il a fallut créer des fonctions
+auxiliaires dans \texttt{deck\_ach1.c} qui sont utilisées par les
+fonctions test. 
+
+\section{Implémentation}
+\subsection{Découpage des fichiers}
+Les fonctions test sont réparties en 3 fichiers :
+\texttt{test\_deck.c}, \texttt{test\_board.c}, et
+\texttt{test\_cards.c}, testant respectivement les fonctions liées au
+deck, à la table de jeu et aux cartes ; les deux derniers faisant les
+tests avec le deck de la Base version et de l'Achivement 1.
+
+\subsection{Fonctions}
+\label{sec3: ftest}
+
+Chacune des fonctions test fonctionne de la façon suivante :
+\begin{itemize}
+    \item La fonction est appelée sur un board quelconque initialisé
+      dans le main du fichier dans laquelle elle se trouve. 
+    \item Elle modifie ce board pour créer une situation initiale connue, pour éviter toute influence externe sur le résultat, et si possible de placer dans une situation que pourrait poser problème.
+    \item Elle appelle la fonction à tester
+    \item Elle vérifie que la situation est bien conforme à ce qui était attendu.
+    \item Si un point n'est pas conforme, elle envoie un message d'erreur signalant à quel niveau est repéré le problème et retourne 1.
+    \item Si tout est conforme, elle retourne 0.
+    \item La fonction main du fichier compte le nombre de fonction test du fichier signalant une erreur.
+\end{itemize}
+
+
+La principale difficulté a été pour les test du deck, puisqu'il fallait permettre au fonction test d'accéder aux différents champs des decks alors qu'elle n'avaient pas accés à leur structure. Pour cela, six fonctions auxiliaires ont été ajoutée au fichier source \texttt{deck\_ach1} : \texttt{get\_top}, \texttt{get\_bottom}, \texttt{get\_ith\_cards}, pour acceder respectivement au top, au bottom et à la i\up{ème} carte du deck, et  \texttt{modif\_top}, \texttt{modif\_bottom}, \texttt{modif\_ith\_card}, permettant de modifier ces mêmes éléments.
+
+De même, une fonction auxiliaure était nécassaire pour la fonction \texttt{ditribute\_test}. Cette dernière vérifie que les champs deck des joueurs contiennent bien les adresses des deck correspondants, dans le tableau "decks", en comparant lesdites adresses et les contenu des champ deck. Or seules les fonctions de \texttt{deck\_ach1} ont accès à ce tableau. Elle fait donc appelle à la fonction \texttt{get\_address} qui est encodé dans \texttt{deck\_ach1} et retourne cette adresse.
+
+
+

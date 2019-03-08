@@ -1,0 +1,1 @@
+/usr/bin/cc  -std=c99    CMakeFiles/kitty_1.dir/board.c.o CMakeFiles/kitty_1.dir/game.c.o CMakeFiles/kitty_1.dir/cards.c.o CMakeFiles/kitty_1.dir/deck.c.o  -o kitty_1 -rdynamic 

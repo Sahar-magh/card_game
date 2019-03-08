@@ -1,0 +1,18 @@
+
+projet(Kitty_Wonderland)
+
+set(SOURCES 
+board.c
+deck.c
+game.c
+deck_ach1.c
+cards.c
+)
+
+set(HEADERS
+
+fonctions.h
+definition.h
+)
+
+add_executable(kitty ${SOURCES} ${HEADERS})	

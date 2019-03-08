@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "definition.h"
+#include "fonctions.h"
+
+
+
+struct deck {
+  int cards[MAX_DECK];
+  int top;
+  int bottom;
+};
+/////////////////////pb : obligé de le remettre ici////////////
+
+
+void apply_card (int c, int p ,struct board* board,struct card card_list[])
+{
+  board->players[p].gain += card_list[c].gain_player;
+  board->players[p].energy  += card_list[c].energy_player;
+  int adversary = choose_adversary (p, *board );
+  switch (c){
+  case Kitty_Steal:
+  case Kitty_Razor:
+  case Kitty_Hell_is_Others:
+  printf ("against %d", adversary);
+  break;
+}
+  if (board->players[adversary].gain > 1){
+    board->players[adversary].gain -= card_list[c].gain_adversary;
+  }
+  board->players[adversary].energy -= card_list[c].energy_adversary;
+}
+
+
+void refill_cards (int p, struct board *board){
+  for (int i = 0 ; i < MAX_CARDS ; ++i){
+    if (board->players[p].hand[i] == Null){
+      board->players[p].hand[i] = draw_card (p,board);
+    }
+  }
+}
+
+
+
+/*
+void discard_hand (int p, struct board *board)
+{
+  int i=0;
+  while(i<MAX_CARDS)
+    {
+      (board->players[p].deck)->cards[ (board->players[p].deck)->bottom ] = board->players[p].hand[i];
+      (board->players[p].deck)->bottom = (board->players[p].deck)->bottom + 1) % MAX_DECK
+      board->players[p].hand[i]=Null;
+      i=i+1;
+    }
+}
+*/
+
+//////////////////////inchangées/////////////////////
+
+int select_card (int p, struct board *board, struct card card_list[])
+{
+  for(int i = 0 ; i < MAX_CARDS ; ++i)
+    {
+      if (board->players[p].ideas >= card_list[board->players[p].hand[i]].cost){
+        board->players[p].ideas -= card_list[board->players[p].hand[i]].cost;
+	int c = board->players[p].hand[i];
+        board->players[p].hand[i] = Null;
+	return c;}
+    }
+  return 0;
+}
+
+
+
+int choose_adversary (int p , struct board board)
+{
+  int r = rand()%(board.players_alive - 1);
+  int adversary = 0;
+
+  while (r){//on cherche le joueur correpondant parmis l'ensemble des joueurs
+    if ( (adversary != p) && (board.players[adversary].state) ){
+      --r;
+    }
+    ++adversary;
+  }
+  if (r == 0){
+    while ( (board.players[adversary].state == 0) || (adversary == p) ){
+      ++ adversary;
+    }
+  }
+  return adversary;
+}
+
